@@ -4,17 +4,21 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@/generated/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { sendMail } from "./sendemail";
-
-
+import { admin as adminplugin } from "better-auth/plugins"
+import { user,admin,teacher,ac } from "@/lib/permissions"
+import { openAPI } from "better-auth/plugins"
 const prisma = new PrismaClient();
+import { signInEmail } from "better-auth/api";
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),
+    
     emailAndPassword: {  
         enabled: true,
         requireEmailVerification: true,
         verifyEmailOnSignUp: true,
+        
         
         
     },
@@ -47,6 +51,19 @@ export const auth = betterAuth({
             clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
         }
     },
-    plugins: [nextCookies()]
+    plugins: [
+        openAPI(),
+        adminplugin(
+            {
+                
+                roles: {
+                    user,
+                    admin,
+                    teacher,
+                },
+                 ac,
+            }
+        ),
+        nextCookies()]
 
 });

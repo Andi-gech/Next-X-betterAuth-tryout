@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@/lib/auth"
 
-
+import { headers } from "next/headers";
 interface SigninInterface {
     email: string;
     password: string;
@@ -57,6 +57,63 @@ export const signup = async (
         }
     } catch (error) {
         const e = error as Error
+
+        return {
+            success: false,
+            message: e.message || "An unknown error occurred."
+        }
+    }
+}
+export const getusersList = async () => {
+    try {
+        const users = await auth.api.listUsers({
+            query: {
+                limit: 10,
+                offset: 0
+            },
+            headers:await headers(),
+        },
+    )
+        return {
+            success: true,
+            data: users
+        }
+    } catch (error) {
+        const e = error as Error
+console.error("Error fetching users:", e);
+        return {
+            success: false,
+            message: e.message || "An unknown error occurred."
+        }
+    }
+}
+
+export const signupTeacher = async (
+    SignupInterface: SignupInterface
+) => {
+    try {
+        await auth.api.createUser({
+            body: {
+                email: SignupInterface.email,
+                password: SignupInterface.password,
+                name: SignupInterface.name,
+                role: "admin"
+
+                
+            }
+
+            
+        })
+
+
+        return {
+            success: true,
+            message: "Signed up successfully."
+        }
+    } catch (error) {
+        const e = error as Error
+
+        console.error("Error signing up teacher:", e);
 
         return {
             success: false,

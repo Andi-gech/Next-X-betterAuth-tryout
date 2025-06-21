@@ -2,8 +2,10 @@ import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-    const sessionCookie = getSessionCookie(request);
-    console.log("Session Cookie:", sessionCookie);
+    const sessionCookie = await getSessionCookie(request);
+    
+   
+    console.log(sessionCookie,"daya")
     if (!sessionCookie) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -12,5 +14,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard"],
+    matcher: ["/dashboard","/teacher"],
 };

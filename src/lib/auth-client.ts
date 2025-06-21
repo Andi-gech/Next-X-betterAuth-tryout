@@ -1,7 +1,19 @@
-import { createAuthClient } from "better-auth/react";
-import { emailOTPClient } from "better-auth/client/plugins"
+import { createAuthClient } from "better-auth/client";
+import { adminClient } from "better-auth/client/plugins"
+import { user,admin,teacher,ac } from "@/lib/permissions"
 export const authClient = createAuthClient({
-    
+     plugins: [
+        adminClient(
+            {
+                 ac,
+            roles: {
+                admin,
+                user,
+                teacher
+            }
+            }
+        )
+    ],
     baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000"
 });
 export const sendemailverification = async (email: string) => {
@@ -23,4 +35,13 @@ export const signInWithGithub = async () => {
         provider: "github",
         callbackURL: "/dashboard",
     })
+}
+
+export const listUsers = async () => {
+    return await authClient.admin.listUsers({
+        query: {
+            limit: 10,
+            offset: 0,
+        },
+    });
 }
