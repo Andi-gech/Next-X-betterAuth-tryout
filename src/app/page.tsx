@@ -1,8 +1,9 @@
-import Button from '@/components/Button';
-import Toggle from '../components/Toggle';
-import Pattern from '@/components/Pattern';
+
+import Toggle from '../components/ui/Toggle';
+import Pattern from '@/components/ui/Pattern';
 import Image from 'next/image';
 import logo from '../Assets/image.png';
+import { Button } from '@/components/ui/button';
 
 
 export default function Home() {
@@ -37,10 +38,12 @@ export default function Home() {
     <h1 className="text-5xl  font-extrabold text-gray-800 dark:text-white mb-4">
  Wellcome to DU LMS
     </h1>
-    <p className="text-gray-600 text-lg dark:text-gray-300">
+    <p className="text-gray-600 text-lg dark:text-gray-300 my-2">
       Learn, Grow, and Achieve with Our University LMS
     </p>
-   <Button/>
+   <Button   >
+    Get Started
+   </Button>
   </div>
 </div>
 

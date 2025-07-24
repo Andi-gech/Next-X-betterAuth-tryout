@@ -1,4 +1,4 @@
-import { createAuthClient } from "better-auth/client";
+import { createAuthClient } from "better-auth/react";
 import { adminClient } from "better-auth/client/plugins"
 import { user,admin,teacher,ac } from "@/lib/permissions"
 export const authClient = createAuthClient({
@@ -44,4 +44,8 @@ export const listUsers = async () => {
             offset: 0,
         },
     });
+}
+
+export const signOut = async () => {
+    await authClient.signOut();
 }

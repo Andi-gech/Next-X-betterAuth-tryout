@@ -80,3 +80,12 @@ model Verification {
 
   @@map("verification")
 }
+model Course {
+  id                  String    @id @map("_id")
+  name                String  
+  Description         String
+  createdAt           DateTime?
+  @@map("course")
+
+
+}

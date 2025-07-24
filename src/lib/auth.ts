@@ -8,16 +8,20 @@ import { admin as adminplugin } from "better-auth/plugins"
 import { user,admin,teacher,ac } from "@/lib/permissions"
 import { openAPI } from "better-auth/plugins"
 const prisma = new PrismaClient();
-import { signInEmail } from "better-auth/api";
+
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),
-    
-    emailAndPassword: {  
+    trustedOrigins: [
+        'http://192.168.1.7/:3000',
+    ],
+
+    emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
         verifyEmailOnSignUp: true,
+        autoSignIn:false
         
         
         
@@ -64,6 +68,8 @@ export const auth = betterAuth({
                  ac,
             }
         ),
+        
         nextCookies()]
+        
 
 });

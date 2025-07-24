@@ -1,66 +1,74 @@
-"use client";
-import React from 'react'
-import { authClient } from '@/lib/auth-client'
-import { useRouter } from 'next/navigation';
-import { getusersList } from '@/server/users';
-import { Button } from "@/components/ui/button"
 
+import { AppSidebar } from "@/components/app-sidebar"
+import { SiteHeader } from "@/components/site-header"
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-export default function page() {
-    const router = useRouter();
-    const [user, setUser] = React.useState<any>(null);
-   const finduser =async ()=>{
-    console.log("Finding user...");
-    const { data,message } = await getusersList();
-    console.log(data);
-    if (data) {
-      setUser(data);
-      console.log("User found:", data);
-    } else {
-      console.log("No user found");
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
+import { headers } from "next/headers";
+export const iframeHeight = "800px"
+
+export const description = "A sidebar with a header and a search form."
+
+type course = {
+  id: string
+  name: string
+  Description: string
+  createdAt: Date
+}
+
+export default async function Page() {
+  const response= await fetch(
+    "http://localhost:3000/api/course",
+    {
+      headers: await headers()
     }
-   
+  )
+  const {courses} = await response.json()
 
-   }
+
+
   return (
-    <div className='bg-yellow-900 min-h-screen p-8'>
-      {
-        user?.users?.map((user: any) => (
-          <div key={user.id} className="p-4 border-b">
-            <h2 className="text-xl font-bold">{user.name}</h2>
-            <p>Email: {user.email}</p>
-            <p>Role: {user.role}</p>
-            <p>Created At: {new Date(user.createdAt).toLocaleDateString()}</p>
-         
-          </div>
-        ))
-      }
-      
-        <Button  variant={"destructive"}  onClick={
-        finduser
-        }>Click me</Button>
-        
-
-        <button  onClick={() => {authClient.signOut(
-          {
-            fetchOptions:{
-              onSuccess(context) {
-                router.push('/login');
-              },
-            }
-          }
-        )}} className="bg-red-500 text-white px-4 py-2 rounded ml-4">
-        Logout
-        </button>
+    <div className="[--header-height:calc(--spacing(14))]">
+      <SidebarProvider className="flex flex-col">
+        <SiteHeader />
+        <div className="flex flex-1">
+          <AppSidebar />
+          <SidebarInset>
+            <div className="flex flex-1 flex-col gap-4 p-4">
+<div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold">Your Enrollments</h1>
+                <span className="text-sm text-muted-foreground">
+                  {courses?.length} courses available
+                </span>
+              </div>
+              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+               
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+              {
+                  courses?.map((c:course) => (
+                    <div
+                      key={c.id}
+                      className="bg-card p-4 rounded-lg shadow hover:shadow-lg transition-shadow"
+                    >
+                      <h3 className="text-lg font-semibold">{c.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {c.Description}
+                      </p>
+                      <span className="text-xs text-muted-foreground">
+                        Created at: {new Date(c.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  ))
+                }
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                
+              </div>
+              <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+            </div>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
     </div>
   )
 }
-
