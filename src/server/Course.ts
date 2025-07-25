@@ -58,6 +58,7 @@ export async function createCourse(req: NextRequest) {
 }
 export async function getCourseList(req: NextRequest) {
   try {
+ 
     const session = await auth.api.getSession(req);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

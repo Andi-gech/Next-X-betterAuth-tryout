@@ -9,7 +9,7 @@ import {
  } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signInWithGoogle,signInWithGithub } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth-client';
 import { toast } from "sonner"
 import { loginSchema } from '@/schema/authSchema';
 import { z } from "zod/v4";
@@ -39,14 +39,22 @@ async function Handleemaillogin(data:loginSchema) {
 }
 async function handleGoogleSignIn() {
             try {
-              await signInWithGoogle();
+              await authClient.signIn.social({
+                      provider: "google",
+                      callbackURL: "/dashboard",
+                      
+                  })
               } catch (error) {
               toast.error("Failed to sign in with Google. Please try again.");
             }
         }
 async function handleGithubSignin() {
         try {
-        await signInWithGithub();
+          await authClient.signIn.social({
+            provider: "github",
+            callbackURL: "/dashboard",
+          });
+          router.push("/dashboard");
            
         } catch (error) {
         toast.error("Failed to sign in with Github. Please try again.");

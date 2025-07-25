@@ -26,7 +26,7 @@ export default async function Page() {
   )
   const {courses} = await response.json()
 
-
+console.log("Courses fetched:", courses);
 
   return (
     <div className="[--header-height:calc(--spacing(14))]">

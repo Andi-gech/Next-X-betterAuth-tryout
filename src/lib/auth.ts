@@ -7,6 +7,7 @@ import { sendMail } from "./sendemail";
 import { admin as adminplugin } from "better-auth/plugins"
 import { user,admin,teacher,ac } from "@/lib/permissions"
 import { openAPI } from "better-auth/plugins"
+import { createAuthMiddleware, APIError } from "better-auth/api";
 const prisma = new PrismaClient();
 
 export const auth = betterAuth({
@@ -16,12 +17,13 @@ export const auth = betterAuth({
     trustedOrigins: [
         'http://192.168.1.7/:3000',
     ],
-
+    
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
         verifyEmailOnSignUp: true,
-        autoSignIn:false
+        autoSignIn:false,
+        
         
         
         
@@ -41,7 +43,12 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
 
     },
-    
+    account: {
+        accountLinking:{
+            enabled: true,
+        }
+    },
+        
     socialProviders: {
         
        google: {

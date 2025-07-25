@@ -22,13 +22,6 @@ export const sendemailverification = async (email: string) => {
         callbackURL: "/dashboard",
     });
 }
-export const signInWithGoogle = async () => {
-    await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/dashboard",
-        
-    })
-}
 
 export const signInWithGithub = async () => {
     await authClient.signIn.social({

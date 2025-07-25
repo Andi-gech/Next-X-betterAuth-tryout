@@ -178,7 +178,7 @@ type User = {
 const userData: User = {
   name: user?.user.name || "Guest",
   email: user?.user.email || "guest@example.com",
-  image: user?.user.image || "/avatars/placeholder.jpg",
+  image: user?.user.image || "",
 }
 
   return (
